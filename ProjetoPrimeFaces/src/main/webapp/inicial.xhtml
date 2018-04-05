@@ -8,31 +8,100 @@
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<style type="text/css">
+@import
+url(#{facesContext.externalContext.request.contextPath}/css/file.css)
+</style>
+
 	<title>Insert title here</title>
 </h:head>
 
 <h:body>
-
-	<h1>Formulario funcionando</h1>
+	<!-- <h:graphicImage value="#{facesContext.externalContext.request.contextPath}/imagem/linha-007.png"/> -->
+	<p:messages id="msg" autoUpdate="true" />
 	<h:form id="formulario">
-	<p:growl id="growl" life="2000" />
-		<h:panelGrid columns="2">
-			<p:outputLabel value="Nome" />
-			<p:inputText value="#{bean.pessoa.nome}" />
-			<p:outputLabel value="E-mail" />
-			<p:inputText value="#{bean.pessoa.email}" />
-			<p:commandButton value="Cadastrar" id="ajax"  actionListener="#{bean.adicionar}" styleClass="ui-priority-primary" update="growl formulario tabelaPessoa"/>
-		</h:panelGrid>
+		<p:panel header="Gestão de Usuarios">
+			<p:growl id="growl" life="2000" />
+			<h:panelGrid columns="2">
+
+				<p:outputLabel value="Primeiro Nome" id="nome" />
+				<p:inputText value="#{usuarioMB.usuario.nome}" id="imputNome"
+					required="true" requiredMessage="Primeiro Nome Obrigatorio!"
+					placeholder="Insira o nome" title="Apenas o Primeiro nome" />
+				<p:outputLabel value="Sobrenome" />
+				<p:inputText value="#{usuarioMB.usuario.sobrenome}"
+					id="imputSobrenome" required="true"
+					requiredMessage="Sobrenome Obrigatorio!"
+					placeholder="Insira o Sobrenome" title="Apenas o Sobrenome!" />
+
+				<p:outputLabel value="DDI" />
+				<p:inputMask id="inputDDI" value="#{usuarioMB.usuario.ddi}"
+					mask="99" required="true" requiredMessage="DDI Obrigatorio!"
+					placeholder="Insira o DDI" title="EX: 55 Brasil" />
+
+				<p:outputLabel value="DDD" />
+				<p:inputMask id="inputDDD" value="#{usuarioMB.usuario.ddd}"
+					mask="99" required="true" requiredMessage="DDD Obrigatorio!"
+					placeholder="Insira o DDD" title="EX: 11 São Paulo" />
+
+				<p:outputLabel value="Celular" />
+				<p:inputMask id="inputCelular" value="#{usuarioMB.usuario.celular}"
+					mask="999999999" required="true"
+					requiredMessage="N° Celular Obrigatorio!"
+					placeholder="Insira o n° do cel." />
+
+				<p:outputLabel value="CPF" />
+				<p:inputMask value="#{usuarioMB.usuario.numCpf}" id="input5CPF"
+					mask="99999999999" required="true"
+					requiredMessage="CPF Obrigatorio!" placeholder="Insira o CPF"
+					title="Apenas números" />
+
+				<p:outputLabel for="dataNascimento" value="Data Nascimento" />
+				<p:calendar value="#{usuarioMB.usuario.dataNascimento}"
+					id="dataNascimento" pattern="dd-MM-yyyy" mask="true"
+					required="true" requiredMessage="Data Nascimento Obrigatoria!"
+					placeholder="Clique no Campo" title="Selecione a Data" />
+
+
+
+				<p:commandButton value="Sugestão Usuario" update="display"
+					actionListener="#{usuarioMB.sugestao}" icon="ui-icon-arrowrefresh-1-w" />
+				<p:inputText id="display" value="#{usuarioMB.usuario.codigoUsuario}"
+					size="50" />
+				<p:commandButton value="Cadastrar" id="cadastrar"
+					actionListener="#{usuarioMB.adicionar}"
+					icon="ui-icon-disk" 
+					update="growl formulario tabelaPessoa" />
+				<p:commandButton value="Cancelar" id="cancelar"
+					actionListener="#{usuarioMB.atualizaPaginaAtual}" immediate="true"
+					icon="ui-icon-close"
+					update="growl formulario tabelaPessoa" />
+
+
+			</h:panelGrid>
+		</p:panel>
+		
 	</h:form>
-
-	<h1>Lista de Pessoas</h1>
-	<p:dataTable value="#{bean.pessoas}" var="p" id="tabelaPessoa">
-		<p:column>#{p.nome}</p:column>
-		<p:column>#{p.email}</p:column>
-	</p:dataTable>
-
-
-
+	
+	<p:panel header="Usuarios X Sistemas">
+		<p:dataTable value="#{usuarioMB.usuarioPortal}" var="p"
+			id="tabelaPessoa">
+			<p:column headerText="Nome">#{p.nome}</p:column>
+			<p:column headerText="Sobrenome">#{p.sobrenome}</p:column>
+			<p:column headerText="DDI" width="30">#{p.ddi}</p:column>
+			<p:column headerText="DDD" width="30">#{p.ddd}</p:column>
+			<p:column headerText="N° Celular" width="70">#{p.celular}</p:column>
+			<p:column headerText="CPF">#{p.numCpf}</p:column>
+			<p:column headerText="Data Nascimento">
+			<h:outputText value="#{p.dataNascimento}">
+				<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+			</h:outputText>
+			</p:column>
+			<p:column headerText="ID Authy" width="70">#{p.idAuthy}</p:column>
+			<p:column headerText="E-mail" width="300">#{p.email}</p:column>
+			<p:column headerText="Codigo Usuario" width="150">#{p.codigoUsuario}</p:column>
+		</p:dataTable>
+	</p:panel>
 </h:body>
 
 </html>
